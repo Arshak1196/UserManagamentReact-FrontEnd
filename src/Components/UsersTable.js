@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
+import {FormInput} from './Styles/FormInput.styled'
+import { set } from 'react-hook-form'
 
 const Div = styled.div`
  margin:0 1rem 0 1rem `
@@ -76,9 +78,9 @@ function UsersTable() {
   let users = useSelector((state) => state.users.users)
   const [tableData, setTableData] = useState([])
   const [filterData,setFilterData]=useState([])
-  const [pages, setPages] = useState(0)
   const [currentpage, setCurrentpage] = useState(1)
   const [rowperPage, setRowperPage] = useState(15)
+  const [searchTerm,setSearchTerm]=useState('')
 
   useEffect(()=>{
     setFilterData(users) 
@@ -133,8 +135,18 @@ function UsersTable() {
     setFilterData([...data])
   }
 
+  const handleSearch=(e)=>{
+    setSearchTerm(e.target.value)
+    console.log(searchTerm)
+    const searchResults = users.filter((user)=>{
+      return Object.values(user).join("").toLowerCase().includes(searchTerm?.toLowerCase())
+    })
+    setFilterData([...searchResults])
+  }
+
   return (
     <Div>
+      <FormInput size='small' type='text' placeholder='search' value={searchTerm} onChange={handleSearch}></FormInput>
       <Table>
         <thead>
           <tr>
