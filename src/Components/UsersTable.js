@@ -74,7 +74,6 @@ transform: rotate(45deg);
 
 function UsersTable() {
   let users = useSelector((state) => state.users.users)
-  let length = users.length
   const [tableData, setTableData] = useState([])
   const [filterData,setFilterData]=useState([])
   const [pages, setPages] = useState(0)
@@ -82,29 +81,26 @@ function UsersTable() {
   const [rowperPage, setRowperPage] = useState(15)
 
   useEffect(()=>{
-    console.log('ello')
     setFilterData(users) 
   },[])
 
   useEffect(() => {    
-    console.log('hai')
     setTableData(filterData.slice(0, rowperPage))
   }, [filterData])
 
   const handleNext = () => {
     if(currentpage<filterData.length/rowperPage){
-      setTableData(users.slice((currentpage * rowperPage), (currentpage * rowperPage) + rowperPage))
+      setTableData(filterData.slice((currentpage * rowperPage), (currentpage * rowperPage) + rowperPage))
       setCurrentpage(currentpage + 1)
     }
   }
 
   const handlePrevious = () => {
-    console.log(currentpage)
-    if (currentpage === 0) {
+    if (currentpage === 1) {
       return
     }
+    setTableData(filterData.slice((currentpage-2)*rowperPage,(currentpage-1)*rowperPage))
     setCurrentpage(currentpage - 1)
-    setTableData(users.slice((currentpage * rowperPage) - rowperPage, (currentpage * rowperPage)))
   }
 
   const sortAscending=()=>{
@@ -120,7 +116,6 @@ function UsersTable() {
     return 0;
     })
     setFilterData([...data])
-    console.log(filterData)
   }
 
   const sortDesending=()=>{
@@ -136,7 +131,6 @@ function UsersTable() {
     return 0;
     })
     setFilterData([...data])
-    console.log(filterData)
   }
 
   return (
@@ -167,11 +161,7 @@ function UsersTable() {
       <Center>
         <Pagination>
           <PgNum onClick={() => handlePrevious()} >&laquo;</PgNum>
-          {/* <PgNum >1</PgNum>
-          <PgNum >2</PgNum>
-          <PgNum >3</PgNum>
-          <PgNum >4</PgNum>
-          <PgNum >5</PgNum> */}
+          <PgNum >{currentpage}</PgNum>
           <PgNum onClick={() => handleNext()} >&raquo;</PgNum>
         </Pagination>
       </Center>
