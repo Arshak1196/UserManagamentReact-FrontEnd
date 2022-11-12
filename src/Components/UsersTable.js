@@ -69,6 +69,7 @@ display: inline-block;
 padding: 3px;
 transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+  cursor:pointer;
 `
 
 function UsersTable() {
@@ -118,11 +119,25 @@ function UsersTable() {
     }
     return 0;
     })
-    console.log(121212)
-    setFilterData(data)
+    setFilterData([...data])
     console.log(filterData)
   }
 
+  const sortDesending=()=>{
+    let data=filterData.sort((a,b)=>{
+      let fa = a.fname.toLowerCase(),
+        fb = b.fname.toLowerCase();
+    if (fa < fb) {
+        return 1;
+    }
+    if (fa > fb) {
+        return -1;
+    }
+    return 0;
+    })
+    setFilterData([...data])
+    console.log(filterData)
+  }
 
   return (
     <Div>
@@ -130,7 +145,7 @@ function UsersTable() {
         <thead>
           <tr>
           <Th>Sl.No</Th>
-          <Th>First Name <SortDiv><ArrowUp onClick={()=>sortAscending()} /> <ArrowDown/></SortDiv></Th>
+          <Th>First Name <SortDiv><ArrowUp onClick={()=>sortAscending()} /> <ArrowDown onClick={()=>sortDesending()}/></SortDiv></Th>
           <Th>Last Name</Th>
           <Th>Email</Th>
           </tr>
